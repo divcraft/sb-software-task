@@ -1,0 +1,13 @@
+{
+  "name": "sb-software-task",
+  "type": "commonjs",
+  "workspaces": [
+    "workspaces/*"
+  ],
+  "scripts": {
+    "dev": "concurrently 'npm run dev -w betting-app' 'npm run dev -w betting-feed'"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
