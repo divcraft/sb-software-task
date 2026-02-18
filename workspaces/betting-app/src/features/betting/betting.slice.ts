@@ -1,22 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { EventsResponseType } from "shared/types";
 
 export interface BettingState {
   bettingFeed: EventsResponseType;
-  subscribedOutcomes: Array<number>;
 }
 
 const initialState: BettingState = {
   bettingFeed: [],
-  subscribedOutcomes: [],
 };
 
 export const bettingSlice = createSlice({
   name: "betting",
   initialState,
-  reducers: {},
+  reducers: {
+    setBettingFeed(state, action: PayloadAction<EventsResponseType>) {
+      state.bettingFeed = action.payload;
+    },
+  },
 });
 
-export const {} = bettingSlice.actions;
+export const { setBettingFeed } = bettingSlice.actions;
 export const bettingReducer = bettingSlice.reducer;
