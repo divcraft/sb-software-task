@@ -5,7 +5,7 @@
     "workspaces/*"
   ],
   "scripts": {
-    "dev": "concurrently 'npm run dev -w betting-app' 'npm run dev -w betting-feed'"
+    "dev": "concurrently 'npm run dev -w betting-feed' 'npm run dev -w betting-app'"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"
