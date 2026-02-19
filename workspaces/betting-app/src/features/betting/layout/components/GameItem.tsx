@@ -6,7 +6,7 @@ type Props = {
   game: GameType;
 };
 
-export const GameRow: React.FC<Props> = ({ game }) => {
+export const GameItem: React.FC<Props> = ({ game }) => {
   return (
     <div className="py-3 border-b border-gray-100">
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2 md:gap-0">

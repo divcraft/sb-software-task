@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { EventType } from "shared/types";
-import { EventItem } from "./EventItem";
+import { GameGroup } from "./GameGroup";
 
 type Props = {
   subcategoryName: string;
@@ -26,7 +26,7 @@ export const CountryGroup: React.FC<Props> = ({ subcategoryName, events }) => {
       {open && (
         <div className="space-y-2">
           {events.map((ev) => (
-            <EventItem key={ev.eventId} event={ev} />
+            <GameGroup key={ev.eventId} event={ev} />
           ))}
         </div>
       )}

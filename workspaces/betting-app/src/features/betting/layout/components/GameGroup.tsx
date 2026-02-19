@@ -1,13 +1,13 @@
 import React from "react";
 import { EventType } from "shared/types";
-import { GameRow } from "./GameRow";
+import { GameItem } from "./GameItem";
 
 type Props = {
   event: EventType;
 };
 
-export const EventItem: React.FC<Props> = ({ event }) => {
-  console.log("EventItem", event.eventName);
+export const GameGroup: React.FC<Props> = ({ event }) => {
+  console.log("GameGroup", event.eventName);
 
   return (
     <div className="mb-4 bg-white rounded-md overflow-hidden">
@@ -23,7 +23,7 @@ export const EventItem: React.FC<Props> = ({ event }) => {
       </div>
       <div className="px-4">
         {event.eventGames.map((g) => (
-          <GameRow key={g.gameId} game={g} />
+          <GameItem key={g.gameId} game={g} />
         ))}
       </div>
     </div>

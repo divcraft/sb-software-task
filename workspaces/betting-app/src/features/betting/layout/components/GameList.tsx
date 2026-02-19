@@ -1,6 +1,6 @@
 import React from "react";
 import { EventType } from "shared/types";
-import { EventItem } from "./EventItem";
+import { GameGroup } from "./GameGroup";
 
 type Props = {
   events: EventType[];
@@ -11,7 +11,7 @@ export const EventList: React.FC<Props> = ({ events, onOutcomeClick }) => {
   return (
     <div className="space-y-4">
       {events.map((e) => (
-        <EventItem key={e.eventId} event={e} />
+        <GameGroup key={e.eventId} event={e} />
       ))}
     </div>
   );
