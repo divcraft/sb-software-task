@@ -1,6 +1,5 @@
 import { SportGroup } from "./SportGroup";
-import { useGetEventsQuery } from "features/betting";
-import { selectSportGroups } from "../../state/betting.selectors";
+import { useGetEventsQuery, selectSportGroups } from "features/betting";
 
 export const FeedGroup = () => {
   const { data: events } = useGetEventsQuery();

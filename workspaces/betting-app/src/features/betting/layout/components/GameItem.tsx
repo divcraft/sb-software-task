@@ -15,7 +15,7 @@ export const GameItem: React.FC<Props> = ({ game }) => {
         </div>
         <div className="flex flex-wrap items-center gap-2 mt-2 md:mt-0">
           {game.outcomes.map((o) => (
-            <OutcomeButton key={o.outcomeId} outcome={o} />
+            <OutcomeButton key={o.outcomeId} outcome={o} gameId={game.gameId} />
           ))}
         </div>
       </div>

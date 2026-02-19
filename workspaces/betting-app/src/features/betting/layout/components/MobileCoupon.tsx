@@ -1,7 +1,17 @@
 import React, { useState } from "react";
+import { useAppSelector } from "store";
+import { useGetEventsQuery } from "features/betting";
+import CouponList from "./CouponList";
+import CouponSummary from "./CouponSummary";
+import { selectResolvedLength } from "../../state/betting.selectors";
 
 export const MobileCoupon: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const { data: events } = useGetEventsQuery();
+
+  const coupon = useAppSelector((s) => s.betting.couponOutcomesIds);
+
+  const resolvedLength = selectResolvedLength(events ?? [], coupon);
 
   return (
     <>
@@ -13,7 +23,7 @@ export const MobileCoupon: React.FC = () => {
         >
           <span className="text-sm font-semibold">KUPON</span>
           <span className="bg-white text-indigo-700 text-xs px-2 py-1 rounded">
-            3
+            {resolvedLength}
           </span>
         </button>
       </div>
@@ -37,26 +47,16 @@ export const MobileCoupon: React.FC = () => {
               </button>
             </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="text-sm">Newcastle United</div>
-                <div className="text-sm font-semibold text-indigo-700">
-                  1.60
-                </div>
+            {resolvedLength === 0 ? (
+              <div className="text-sm text-gray-500">
+                Brak wybranych zakładów
               </div>
-              <div className="flex items-center justify-between">
-                <div className="text-sm">Remis</div>
-                <div className="text-sm font-semibold text-indigo-700">
-                  3.35
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="text-sm">Udinese Calcio</div>
-                <div className="text-sm font-semibold text-indigo-700">
-                  3.96
-                </div>
-              </div>
-            </div>
+            ) : (
+              <>
+                <CouponList />
+                <CouponSummary />
+              </>
+            )}
 
             <div className="mt-6">
               <button className="w-full bg-indigo-700 text-white py-2 rounded-md">

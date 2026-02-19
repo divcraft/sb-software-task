@@ -26,22 +26,21 @@ export const bettingSlice = createSlice({
       state,
       action: PayloadAction<{ gameId: number; outcomeId: number }>,
     ) {
-      if (
-        state.couponOutcomesIds.some(
-          (x) => x.outcomeId !== action.payload.outcomeId,
-        )
-      ) {
-        if (
-          state.couponOutcomesIds.some(
-            (x) => x.gameId === action.payload.gameId,
-          )
-        ) {
-          state.couponOutcomesIds = state.couponOutcomesIds.map((x) =>
-            x.gameId === action.payload.gameId ? action.payload : x,
-          );
+      const { gameId, outcomeId } = action.payload;
+
+      const existingIndex = state.couponOutcomesIds.findIndex(
+        (x) => x.gameId === gameId,
+      );
+
+      if (existingIndex !== -1) {
+        const existing = state.couponOutcomesIds[existingIndex];
+        if (existing.outcomeId === outcomeId) {
+          state.couponOutcomesIds.splice(existingIndex, 1);
         } else {
-          state.couponOutcomesIds.push(action.payload);
+          state.couponOutcomesIds[existingIndex] = { gameId, outcomeId };
         }
+      } else {
+        state.couponOutcomesIds = [...state.couponOutcomesIds, action.payload];
       }
     },
     setMultiplier(state, action: PayloadAction<number | null>) {

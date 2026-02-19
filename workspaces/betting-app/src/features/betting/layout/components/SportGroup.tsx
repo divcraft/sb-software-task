@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from "react";
-import { ClientMessage, EventType } from "shared/types";
+import React, { useState } from "react";
+import { EventType } from "shared/types";
 import { CountryGroup } from "./CountryGroup";
-import { BettingSocket } from "../../api/betting.socket";
-import { selectCountryGroups } from "../../state/betting.selectors";
+import { selectCountryGroups } from "features/betting";
 
 type Props = {
   categoryName: string;
