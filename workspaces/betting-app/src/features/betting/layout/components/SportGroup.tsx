@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const SportGroup: React.FC<Props> = ({ categoryName, events }) => {
-  console.log("SportGroup", categoryName);
+  //   console.log("SportGroup", categoryName);
 
   const [open, setOpen] = useState(true);
   const countryGroups = selectCountryGroups(events);

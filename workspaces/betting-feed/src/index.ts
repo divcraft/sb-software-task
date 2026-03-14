@@ -87,6 +87,7 @@ const updateOdds = () => {
 };
 
 const broadcast = (updates: ServerMessage) => {
+  // console.log("Broadcasting updates", updates);
   for (const ws of wss.clients) {
     const client = clientFeed.get(ws);
 
@@ -94,9 +95,10 @@ const broadcast = (updates: ServerMessage) => {
 
     if (ws.readyState === ws.OPEN) {
       if (updates.type === "OUTCOMES_UPDATE") {
-        const filteredPayload = updates.payload.filter((update) =>
-          subscribedOutcomesIds.includes(update.outcomeId),
-        );
+        const filteredPayload = updates.payload;
+        // const filteredPayload = updates.payload.filter((update) =>
+        //   subscribedOutcomesIds.includes(update.outcomeId),
+        // );
         if (filteredPayload.length > 0) {
           send(ws, {
             ...updates,

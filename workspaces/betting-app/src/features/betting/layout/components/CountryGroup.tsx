@@ -9,7 +9,7 @@ type Props = {
 
 export const CountryGroup: React.FC<Props> = ({ subcategoryName, events }) => {
   const [open, setOpen] = useState(false);
-  console.log("CountryGroup", subcategoryName);
+  //   console.log("CountryGroup", subcategoryName);
 
   return (
     <div className="rounded-md overflow-hidden">

@@ -15,7 +15,7 @@ export const bettingApi = createApi({
         const socket = BettingSocket.get();
 
         socket.setMessageHandler((msg: ServerMessage) => {
-          console.log("Received WS message", msg);
+          //   console.log("Received WS message", msg);
           switch (msg.type) {
             case "INIT_FEED":
               updateCachedData(() => msg.payload);

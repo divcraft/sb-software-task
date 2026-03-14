@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const GameGroup: React.FC<Props> = ({ event }) => {
-  console.log("GameGroup", event.eventName);
+  //   console.log("GameGroup", event.eventName);
 
   return (
     <div className="mb-4 bg-white rounded-md overflow-hidden">
