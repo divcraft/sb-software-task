@@ -1,18 +1,23 @@
 import React, { useState } from "react";
-import { EventType } from "shared/types";
 import { CountryGroup } from "./CountryGroup";
-import { selectCountryGroups } from "features/betting";
+import { useGetEventsQuery } from "features/betting";
 
 type Props = {
-  categoryName: string;
-  events: EventType[];
+  sportId: number;
 };
 
-export const SportGroup: React.FC<Props> = ({ categoryName, events }) => {
-  //   console.log("SportGroup", categoryName);
-
+export const SportGroup: React.FC<Props> = ({ sportId }) => {
   const [open, setOpen] = useState(true);
-  const countryGroups = selectCountryGroups(events);
+  const { countryIds, sportName } = useGetEventsQuery(undefined, {
+    selectFromResult: ({ data }) => {
+      return {
+        sportName: data?.sports[sportId]?.sportName,
+        countryIds: data?.sports[sportId]?.countryIds,
+      };
+    },
+  });
+  console.log("SportGroup", sportName, countryIds);
+  if (!countryIds || !sportName) return null;
 
   return (
     <section className="bg-white rounded-md shadow-sm overflow-hidden">
@@ -24,20 +29,22 @@ export const SportGroup: React.FC<Props> = ({ categoryName, events }) => {
           <span className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs">
             ⚽
           </span>
-          <div className="text-sm font-semibold">{categoryName}</div>
+          <div className="text-sm font-semibold">{sportName}</div>
         </div>
         <div className="text-sm">{open ? "▾" : "▸"}</div>
       </header>
 
       {open && (
         <div>
-          {countryGroups.map((c) => (
-            <CountryGroup
-              key={c.countryName}
-              subcategoryName={c.countryName}
-              events={c.events}
-            />
-          ))}
+          {countryIds.map((countryId) => {
+            return (
+              <CountryGroup
+                key={countryId}
+                countryId={countryId}
+                sportId={sportId}
+              />
+            );
+          })}
         </div>
       )}
     </section>

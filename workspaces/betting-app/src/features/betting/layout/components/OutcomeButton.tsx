@@ -1,20 +1,37 @@
 import React from "react";
-import { OutcomeType } from "shared/types";
 import { useAppDispatch, useAppSelector } from "store";
-import { setCouponOutcomeId } from "features/betting";
+import { setCouponOutcomeId, useGetEventsQuery } from "features/betting";
 
 type Props = {
-  outcome: OutcomeType;
   gameId: number;
+  sportId: number;
+  countryId: number;
+  eventId: number;
+  outcomeId: number;
   highlighted?: boolean;
 };
 
 export const OutcomeButton: React.FC<Props> = ({
-  outcome,
+  outcomeId,
   gameId,
+  sportId,
+  countryId,
+  eventId,
   highlighted,
 }) => {
   const dispatch = useAppDispatch();
+  const { outcome } = useGetEventsQuery(undefined, {
+    selectFromResult: ({ data }) => {
+      return {
+        outcome: Object.values(
+          data?.sports[sportId]?.countries[countryId]?.events[eventId]?.games[
+            gameId
+          ]?.outcomes ?? {},
+        ).find((o) => o.outcomeId === outcomeId),
+      };
+    },
+  });
+  if (!outcome) return null;
   const isInCoupon = useAppSelector((s) =>
     s.betting.couponOutcomesIds.some(
       (x) => x.gameId === gameId && x.outcomeId === outcome.outcomeId,

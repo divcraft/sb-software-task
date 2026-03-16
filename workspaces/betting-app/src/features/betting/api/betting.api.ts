@@ -1,12 +1,13 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { BettingSocket } from "./betting.socket";
-import { EventsResponseType, ServerMessage } from "shared/types";
+import { ServerMessage } from "shared/types";
+import { BettingStateType, convertToStateType } from "./utils";
 
 export const bettingApi = createApi({
   reducerPath: "bettingApi",
   baseQuery: async () => ({ data: null }),
   endpoints: (build) => ({
-    getEvents: build.query<EventsResponseType, void>({
+    getEvents: build.query<BettingStateType, void>({
       query: () => undefined,
       async onCacheEntryAdded(
         _arg,
@@ -15,23 +16,39 @@ export const bettingApi = createApi({
         const socket = BettingSocket.get();
 
         socket.setMessageHandler((msg: ServerMessage) => {
-          //   console.log("Received WS message", msg);
+          console.log("Received WS message", msg);
           switch (msg.type) {
             case "INIT_FEED":
-              updateCachedData(() => msg.payload);
+              updateCachedData(() => convertToStateType(msg.payload));
               break;
             case "OUTCOMES_UPDATE":
               updateCachedData((draft) => {
-                draft.forEach((event) =>
-                  event.eventGames.forEach((game) =>
-                    game.outcomes.forEach((outcome) => {
-                      const u = msg.payload.find(
-                        (x) => x.outcomeId === outcome.outcomeId,
-                      );
-                      if (u) outcome.outcomeOdds = u.newOdds;
-                    }),
-                  ),
-                );
+                msg.payload.forEach((update) => {
+                  const outcomeData = draft.outcomesIds[update.outcomeId];
+                  if (!outcomeData) {
+                    console.warn(
+                      "Received update for unknown outcomeId 1",
+                      update.outcomeId,
+                    );
+                    return;
+                  }
+                  const { sportId, countryId, eventId, gameId, outcomeId } =
+                    outcomeData;
+                  const outcome =
+                    draft.sports[sportId]?.countries[countryId]?.events[eventId]
+                      ?.games[gameId]?.outcomes[outcomeId];
+                  if (!outcome) {
+                    console.warn(
+                      "Received update for unknown outcomeId 2",
+                      draft.sports[sportId]?.countries[countryId]?.events[
+                        eventId
+                      ]?.games,
+                      gameId,
+                    );
+                    return;
+                  }
+                  outcome.outcomeOdds = update.newOdds;
+                });
               });
               break;
             case "SUBSCRIPTION_UPDATED":

@@ -1,21 +1,18 @@
+"use client";
+import { useGetEventsQuery } from "features/betting";
 import { SportGroup } from "./SportGroup";
-import { useGetEventsQuery, selectSportGroups } from "features/betting";
 
 export const FeedGroup = () => {
-  const { data: events } = useGetEventsQuery();
-
-  if (!events) return <div>Loading...</div>;
-
-  const sportGroups = selectSportGroups(events);
-
+  const { sportIds } = useGetEventsQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      sportIds: data?.sportIds ?? [],
+    }),
+  });
+  console.log("FeedGroup", sportIds);
   return (
     <div className="w-full">
-      {sportGroups.map((sport) => (
-        <SportGroup
-          key={sport.sportName}
-          categoryName={sport.sportName}
-          events={sport.events}
-        />
+      {sportIds.map((sportId) => (
+        <SportGroup key={sportId} sportId={sportId} />
       ))}
     </div>
   );

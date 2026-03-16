@@ -31,8 +31,8 @@ export class BettingSocket {
       try {
         const msg: ServerMessage = JSON.parse(ev.data);
         this.messageHandler?.(msg);
-      } catch {
-        console.warn("Invalid WS message");
+      } catch (err) {
+        console.warn("Invalid WS message", err);
       }
     };
     this.ws.onclose = () => {

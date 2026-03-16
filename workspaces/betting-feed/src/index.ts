@@ -119,7 +119,7 @@ const scheduleUpdate = () => {
   setTimeout(() => {
     updateOdds();
     scheduleUpdate();
-  }, delay);
+  }, 1500);
 };
 
 scheduleUpdate();
