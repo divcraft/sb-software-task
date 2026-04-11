@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "store";
-import { setCouponOutcomeId, useGetEventsQuery } from "features/betting";
+import { selectOutcome, setCouponOutcomeId } from "features/betting";
+import { useSelector } from "react-redux";
 
 type Props = {
   gameId: number;
@@ -11,31 +12,14 @@ type Props = {
   highlighted?: boolean;
 };
 
-export const OutcomeButton: React.FC<Props> = ({
-  outcomeId,
-  gameId,
-  sportId,
-  countryId,
-  eventId,
-  highlighted,
-}) => {
+export const OutcomeButton: React.FC<Props> = ({ outcomeId, gameId, sportId, countryId, eventId, highlighted }) => {
   const dispatch = useAppDispatch();
-  const { outcome } = useGetEventsQuery(undefined, {
-    selectFromResult: ({ data }) => {
-      return {
-        outcome: Object.values(
-          data?.sports[sportId]?.countries[countryId]?.events[eventId]?.games[
-            gameId
-          ]?.outcomes ?? {},
-        ).find((o) => o.outcomeId === outcomeId),
-      };
-    },
-  });
+  const outcome = useSelector((state) => selectOutcome(state, sportId, countryId, eventId, gameId, outcomeId));
+
   if (!outcome) return null;
+
   const isInCoupon = useAppSelector((s) =>
-    s.betting.couponOutcomesIds.some(
-      (x) => x.gameId === gameId && x.outcomeId === outcome.outcomeId,
-    ),
+    s.betting.couponOutcomesIds.some((x) => x.gameId === gameId && x.outcomeId === outcome.outcomeId),
   );
 
   const handleClick = () => {
@@ -52,9 +36,7 @@ export const OutcomeButton: React.FC<Props> = ({
       }`}
     >
       <div className="flex items-center space-x-2">
-        <span className="text-sm font-semibold">
-          {outcome.outcomeOdds.toFixed(2)}
-        </span>
+        <span className="text-sm font-semibold">{outcome.outcomeOdds.toFixed(2)}</span>
       </div>
     </button>
   );

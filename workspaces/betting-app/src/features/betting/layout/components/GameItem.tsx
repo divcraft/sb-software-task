@@ -1,6 +1,7 @@
 import React from "react";
 import { OutcomeButton } from "./OutcomeButton";
-import { useGetEventsQuery } from "features/betting";
+import { selectGameName, selectOutcomesIds } from "features/betting";
+import { useSelector } from "react-redux";
 
 type Props = {
   gameId: number;
@@ -9,24 +10,10 @@ type Props = {
   eventId: number;
 };
 
-export const GameItem: React.FC<Props> = ({
-  gameId,
-  sportId,
-  countryId,
-  eventId,
-}) => {
-  const { outcomesIds, gameName } = useGetEventsQuery(undefined, {
-    selectFromResult: ({ data }) => {
-      const game = Object.values(
-        data?.sports[sportId]?.countries[countryId]?.events[eventId]?.games ??
-          {},
-      ).find((g) => g.gameId === gameId);
-      return {
-        outcomesIds: game?.outcomesIds,
-        gameName: game?.gameName,
-      };
-    },
-  });
+export const GameItem: React.FC<Props> = ({ gameId, sportId, countryId, eventId }) => {
+  const outcomesIds = useSelector((state) => selectOutcomesIds(state, sportId, countryId, eventId, gameId));
+  const gameName = useSelector((state) => selectGameName(state, sportId, countryId, eventId, gameId));
+
   if (!outcomesIds || !gameName) return null;
   return (
     <div className="py-3 border-b border-gray-100">

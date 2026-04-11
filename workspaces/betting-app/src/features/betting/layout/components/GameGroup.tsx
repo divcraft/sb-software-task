@@ -1,6 +1,7 @@
 import React from "react";
 import { GameItem } from "./GameItem";
-import { useGetEventsQuery } from "features/betting";
+import { selectEventName, selectGamesIds } from "features/betting";
+import { useSelector } from "react-redux";
 
 type Props = {
   sportId: number;
@@ -9,17 +10,9 @@ type Props = {
 };
 
 export const GameGroup: React.FC<Props> = ({ eventId, sportId, countryId }) => {
-  const { gamesIds, eventName } = useGetEventsQuery(undefined, {
-    selectFromResult: ({ data }) => {
-      const event = Object.values(
-        data?.sports[sportId]?.countries[countryId]?.events ?? {},
-      ).find((e) => e.eventId === eventId);
-      return {
-        gamesIds: event?.gamesIds,
-        eventName: event?.eventName,
-      };
-    },
-  });
+  const gamesIds = useSelector((state) => selectGamesIds(state, sportId, countryId, eventId));
+  const eventName = useSelector((state) => selectEventName(state, sportId, countryId, eventId));
+
   if (!gamesIds || !eventName) return null;
   console.log("GameGroup", eventName, gamesIds);
 
@@ -27,9 +20,7 @@ export const GameGroup: React.FC<Props> = ({ eventId, sportId, countryId }) => {
     <div className="mb-4 bg-white rounded-md overflow-hidden">
       <div className="px-4 py-3">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-          <div className="text-sm text-indigo-800 font-semibold">
-            {eventName}
-          </div>
+          <div className="text-sm text-indigo-800 font-semibold">{eventName}</div>
           {/* <div className="text-xs text-gray-500 mt-1 md:mt-0">
             {new Date(event.eventStart).toLocaleString()}
           </div> */}

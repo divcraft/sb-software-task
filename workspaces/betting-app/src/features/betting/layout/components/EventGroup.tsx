@@ -1,13 +1,10 @@
 "use client";
-import { useGetEventsQuery } from "features/betting";
+import { selectSportIds } from "features/betting";
 import { SportGroup } from "./SportGroup";
+import { useSelector } from "react-redux";
 
 export const FeedGroup = () => {
-  const { sportIds } = useGetEventsQuery(undefined, {
-    selectFromResult: ({ data }) => ({
-      sportIds: data?.sportIds ?? [],
-    }),
-  });
+  const sportIds = useSelector(selectSportIds);
   console.log("FeedGroup", sportIds);
   return (
     <div className="w-full">

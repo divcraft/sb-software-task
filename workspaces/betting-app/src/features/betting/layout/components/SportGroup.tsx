@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CountryGroup } from "./CountryGroup";
-import { useGetEventsQuery } from "features/betting";
+import { selectCountryIds, selectSportName } from "features/betting";
+import { useSelector } from "react-redux";
 
 type Props = {
   sportId: number;
@@ -8,15 +9,12 @@ type Props = {
 
 export const SportGroup: React.FC<Props> = ({ sportId }) => {
   const [open, setOpen] = useState(true);
-  const { countryIds, sportName } = useGetEventsQuery(undefined, {
-    selectFromResult: ({ data }) => {
-      return {
-        sportName: data?.sports[sportId]?.sportName,
-        countryIds: data?.sports[sportId]?.countryIds,
-      };
-    },
-  });
+
+  const countryIds = useSelector((state) => selectCountryIds(state, sportId));
+  const sportName = useSelector((state) => selectSportName(state, sportId));
+
   console.log("SportGroup", sportName, countryIds);
+
   if (!countryIds || !sportName) return null;
 
   return (
@@ -26,9 +24,7 @@ export const SportGroup: React.FC<Props> = ({ sportId }) => {
         onClick={() => setOpen((v) => !v)}
       >
         <div className="flex items-center space-x-3">
-          <span className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs">
-            ⚽
-          </span>
+          <span className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs">⚽</span>
           <div className="text-sm font-semibold">{sportName}</div>
         </div>
         <div className="text-sm">{open ? "▾" : "▸"}</div>
@@ -37,13 +33,7 @@ export const SportGroup: React.FC<Props> = ({ sportId }) => {
       {open && (
         <div>
           {countryIds.map((countryId) => {
-            return (
-              <CountryGroup
-                key={countryId}
-                countryId={countryId}
-                sportId={sportId}
-              />
-            );
+            return <CountryGroup key={countryId} countryId={countryId} sportId={sportId} />;
           })}
         </div>
       )}
