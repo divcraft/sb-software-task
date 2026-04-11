@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface BettingState {
   displayedOutcomesIds: Array<number>;
-  couponOutcomesIds: Array<{
+  coupon: Array<{
     gameId: number;
     outcomeId: number;
   }>;
@@ -11,7 +11,7 @@ export interface BettingState {
 
 const initialState: BettingState = {
   displayedOutcomesIds: [],
-  couponOutcomesIds: [],
+  coupon: [],
   multiplier: null,
 };
 
@@ -22,25 +22,17 @@ export const bettingSlice = createSlice({
     subscribeOutcomesByCountry(state, action: PayloadAction<Array<number>>) {
       state.displayedOutcomesIds = action.payload;
     },
-    setCouponOutcomeId(
-      state,
-      action: PayloadAction<{ gameId: number; outcomeId: number }>,
-    ) {
+    setCoupon(state, action: PayloadAction<{ gameId: number; outcomeId: number }>) {
       const { gameId, outcomeId } = action.payload;
 
-      const existingIndex = state.couponOutcomesIds.findIndex(
-        (x) => x.gameId === gameId,
-      );
-
-      if (existingIndex !== -1) {
-        const existing = state.couponOutcomesIds[existingIndex];
-        if (existing.outcomeId === outcomeId) {
-          state.couponOutcomesIds.splice(existingIndex, 1);
+      if (state.coupon.some((item) => item.gameId === gameId)) {
+        if (state.coupon.some((item) => item.outcomeId === outcomeId)) {
+          state.coupon = state.coupon.filter((item) => item.outcomeId !== outcomeId);
         } else {
-          state.couponOutcomesIds[existingIndex] = { gameId, outcomeId };
+          state.coupon = state.coupon.map((item) => (item.gameId === gameId ? { ...item, outcomeId } : item));
         }
       } else {
-        state.couponOutcomesIds = [...state.couponOutcomesIds, action.payload];
+        state.coupon.push({ gameId, outcomeId });
       }
     },
     setMultiplier(state, action: PayloadAction<number | null>) {
@@ -49,6 +41,5 @@ export const bettingSlice = createSlice({
   },
 });
 
-export const { subscribeOutcomesByCountry, setCouponOutcomeId, setMultiplier } =
-  bettingSlice.actions;
+export const { subscribeOutcomesByCountry, setCoupon, setMultiplier } = bettingSlice.actions;
 export const bettingReducer = bettingSlice.reducer;

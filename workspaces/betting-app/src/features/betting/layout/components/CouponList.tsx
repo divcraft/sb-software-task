@@ -1,25 +1,19 @@
 import React from "react";
 import { CouponItem } from "./CouponItem";
 import { useAppSelector } from "store";
-
-type Item = {
-  gameId: number;
-  outcomeId: number;
-};
+import { selectCouponOutcomesIds, selectCouponTotal } from "features/betting";
 
 export const CouponList: React.FC = () => {
-  const coupons = useAppSelector((s) => s.betting.couponOutcomesIds);
+  const coupon = useAppSelector((state) => state.betting.coupon);
+  //   const couponOutcomesIds = useAppSelector(selectCouponOutcomesIds);
+  console.debug("CouponList", coupon);
+  const couponTotal = useAppSelector(selectCouponTotal);
 
   return (
     <div className="space-y-3">
-      {coupons.map((coupon) => (
-        <CouponItem
-          key={`${coupon.gameId}-${coupon.outcomeId}`}
-          gameId={coupon.gameId}
-          outcomeId={coupon.outcomeId}
-        />
+      {coupon.map(({ outcomeId }) => (
+        <CouponItem key={outcomeId} outcomeId={outcomeId} />
       ))}
     </div>
   );
 };
-export default CouponList;

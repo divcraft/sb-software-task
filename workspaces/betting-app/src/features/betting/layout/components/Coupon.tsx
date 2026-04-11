@@ -1,6 +1,6 @@
 import React from "react";
-import CouponList from "./CouponList";
 import CouponSummary from "./CouponSummary";
+import { CouponList } from "./CouponList";
 
 export const Coupon: React.FC = () => {
   return (
@@ -10,9 +10,7 @@ export const Coupon: React.FC = () => {
         <CouponList />
         <CouponSummary />
         <div className="mt-4">
-          <button className="w-full bg-indigo-700 text-white py-2 rounded-md">
-            POSTAW ZAKŁAD
-          </button>
+          <button className="w-full bg-indigo-700 text-white py-2 rounded-md">POSTAW ZAKŁAD</button>
         </div>
       </div>
     </aside>

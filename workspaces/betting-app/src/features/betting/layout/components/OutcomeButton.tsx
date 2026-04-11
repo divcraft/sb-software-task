@@ -1,29 +1,23 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "store";
-import { selectOutcome, setCouponOutcomeId } from "features/betting";
+import { selectOutcomeOdds, setCoupon } from "features/betting";
 
 type Props = {
   gameId: number;
-  sportId: number;
-  countryId: number;
-  eventId: number;
   outcomeId: number;
   highlighted?: boolean;
 };
 
-export const OutcomeButton: React.FC<Props> = ({ outcomeId, gameId, sportId, countryId, eventId, highlighted }) => {
+export const OutcomeButton: React.FC<Props> = ({ outcomeId, gameId, highlighted }) => {
   const dispatch = useAppDispatch();
-  const outcome = useAppSelector((state) => selectOutcome(state, outcomeId));
-  //   const outcome = useAppSelector((state) => selectOutcome(state, sportId, countryId, eventId, gameId, outcomeId));
-
-  if (!outcome) return null;
+  const odds = useAppSelector((state) => selectOutcomeOdds(state, outcomeId));
 
   const isInCoupon = useAppSelector((s) =>
-    s.betting.couponOutcomesIds.some((x) => x.gameId === gameId && x.outcomeId === outcome.id),
+    s.betting.coupon.some((couponItem) => couponItem.gameId === gameId && couponItem.outcomeId === outcomeId),
   );
 
   const handleClick = () => {
-    dispatch(setCouponOutcomeId({ gameId, outcomeId: outcome.id }));
+    dispatch(setCoupon({ gameId, outcomeId }));
   };
 
   return (
@@ -36,7 +30,7 @@ export const OutcomeButton: React.FC<Props> = ({ outcomeId, gameId, sportId, cou
       }`}
     >
       <div className="flex items-center space-x-2">
-        <span className="text-sm font-semibold">{outcome.odds.toFixed(2)}</span>
+        <span className="text-sm font-semibold">{odds}</span>
       </div>
     </button>
   );

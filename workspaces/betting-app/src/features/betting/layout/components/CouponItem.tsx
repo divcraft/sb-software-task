@@ -1,31 +1,22 @@
-import React, { useMemo } from "react";
-import { useGetEventsQuery } from "features/betting";
+import React from "react";
 import { useAppSelector } from "store";
-import { selectResolvedCouponItem } from "features/betting";
+import { selectEventNameByOutcomeId, selectOutcomeName } from "features/betting";
+import OddsItem from "./OddsItem";
 
 type Props = {
-  gameId: number;
   outcomeId: number;
 };
 
-export const CouponItem: React.FC<Props> = ({ gameId, outcomeId }) => {
-  const { data: events } = useGetEventsQuery();
-
-  const selectResolved = useMemo(() => selectResolvedCouponItem(), []);
-
-  const item = useAppSelector((s) =>
-    // pass events from query as first arg, selector factory expects (events, gameId, outcomeId)
-    selectResolved(events ?? [], gameId, outcomeId),
-  );
+export const CouponItem: React.FC<Props> = ({ outcomeId }) => {
+  const eventName = useAppSelector((state) => selectEventNameByOutcomeId(state, outcomeId));
+  const outcomeName = useAppSelector((state) => selectOutcomeName(state, outcomeId));
 
   return (
     <div className="flex items-center justify-between">
       <div className="text-sm truncate">
-        {item.eventName} — {item.outcomeName}
+        {eventName} — {outcomeName}
       </div>
-      <div className="text-sm font-semibold text-indigo-700">
-        {item.odds.toFixed(2)}
-      </div>
+      <OddsItem outcomeId={outcomeId} />
     </div>
   );
 };

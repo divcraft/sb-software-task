@@ -22,13 +22,13 @@ export const bettingApi = createApi({
               updateCachedData((draft) => {
                 msg.payload.forEach((update) => {
                   const outcome = draft.outcomes.records[update.outcomeId] ?? null;
+
                   if (!outcome) {
-                    console.warn("Received update for unknown outcomeId 0", update.outcomeId);
+                    console.warn("Received update for unknown outcomeId", update.outcomeId);
                     return;
                   }
 
-                  const updatedOutcome = { ...outcome, outcomeOdds: update.newOdds };
-
+                  const updatedOutcome = { ...outcome, odds: update.newOdds };
                   draft.outcomes.records[update.outcomeId] = updatedOutcome;
                 });
               });

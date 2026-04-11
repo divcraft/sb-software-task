@@ -1,23 +1,18 @@
 import React, { useState } from "react";
 import { GameGroup } from "./GameGroup";
 import { selectCountryName, selectEventsIds, selectEventsLength } from "features/betting";
-import { useAppSelector } from 'store';
+import { useAppSelector } from "store";
 
 type Props = {
-  sportId: number;
   countryId: number;
 };
 
-export const CountryGroup: React.FC<Props> = ({ sportId, countryId }) => {
+export const CountryGroup: React.FC<Props> = ({ countryId }) => {
   const [open, setOpen] = useState(false);
 
   const countryName = useAppSelector((state) => selectCountryName(state, countryId));
   const eventsIds = useAppSelector((state) => selectEventsIds(state, countryId));
   const eventsLength = useAppSelector((state) => selectEventsLength(state, countryId));
-
-//   const countryName = useAppSelector((state) => selectCountryName(state, sportId, countryId));
-//   const eventsIds = useAppSelector((state) => selectEventsIds(state, sportId, countryId));
-//   const eventsLength = useAppSelector((state) => selectEventsLength(state, sportId, countryId));
 
   console.log("CountryGroup", countryName, eventsLength, eventsIds);
 
@@ -34,7 +29,7 @@ export const CountryGroup: React.FC<Props> = ({ sportId, countryId }) => {
       {open && (
         <div className="space-y-2">
           {eventsIds.map((eventId) => (
-            <GameGroup key={eventId} sportId={sportId} countryId={countryId} eventId={eventId} />
+            <GameGroup key={eventId} eventId={eventId} />
           ))}
         </div>
       )}

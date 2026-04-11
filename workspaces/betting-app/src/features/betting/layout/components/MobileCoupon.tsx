@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useAppSelector } from "store";
-import CouponList from "./CouponList";
 import CouponSummary from "./CouponSummary";
-import { selectResolvedCouponLength } from "../../state/betting.selectors";
+import { selectCouponLength } from "../../state/betting.selectors";
 
 export const MobileCoupon: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const resolvedLength = useAppSelector(selectResolvedCouponLength);
+  const resolvedLength = useAppSelector(selectCouponLength);
 
   return (
     <>
@@ -37,8 +36,8 @@ export const MobileCoupon: React.FC = () => {
               <div className="text-sm text-gray-500">Brak wybranych zakładów</div>
             ) : (
               <>
-                <CouponList />
-                <CouponSummary />
+                {/* <CouponList /> */}
+                {/* <CouponSummary /> */}
               </>
             )}
 

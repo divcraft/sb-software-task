@@ -4,12 +4,10 @@ import { selectEventName, selectGamesIds } from "features/betting";
 import { useAppSelector } from "store";
 
 type Props = {
-  sportId: number;
-  countryId: number;
   eventId: number;
 };
 
-export const GameGroup: React.FC<Props> = ({ eventId, sportId, countryId }) => {
+export const GameGroup: React.FC<Props> = ({ eventId }) => {
   const gamesIds = useAppSelector((state) => selectGamesIds(state, eventId));
   const eventName = useAppSelector((state) => selectEventName(state, eventId));
 
@@ -28,7 +26,7 @@ export const GameGroup: React.FC<Props> = ({ eventId, sportId, countryId }) => {
       </div>
       <div className="px-4">
         {gamesIds.map((gameId) => (
-          <GameItem key={gameId} eventId={eventId} sportId={sportId} countryId={countryId} gameId={gameId} />
+          <GameItem key={gameId} gameId={gameId} />
         ))}
       </div>
     </div>

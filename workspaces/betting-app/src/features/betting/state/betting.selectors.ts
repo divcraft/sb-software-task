@@ -77,6 +77,15 @@ export const selectEventName = createSelector([selectState, (_, eventId: number)
   return eventName;
 });
 
+export const selectEventNameByOutcomeId = createSelector(
+  [selectState, (_, outcomeId: number) => outcomeId],
+  (state, outcomeId) => {
+    const outcome = bettingApi.endpoints.getEvents.select()(state)?.data?.outcomes.records[outcomeId];
+    const event = bettingApi.endpoints.getEvents.select()(state)?.data?.events.records[outcome?.eventId ?? 0];
+    return event?.name || "Unknown";
+  },
+);
+
 export const selectOutcomesIds = createSelector([selectState, (_, gameId: number) => gameId], (state, gameId) => {
   const outcomesIds = bettingApi.endpoints.getEvents.select()(state)?.data?.games.records[gameId]?.outcomeIds || [];
   return outcomesIds;
@@ -92,6 +101,23 @@ export const selectOutcome = createSelector([selectState, (_, outcomeId: number)
   return outcome;
 });
 
+export const selectOutcomeName = createSelector(
+  [selectState, (_, outcomeId: number) => outcomeId],
+  (state, outcomeId) => {
+    const outcomeName =
+      bettingApi.endpoints.getEvents.select()(state)?.data?.outcomes.records[outcomeId]?.name || "Unknown";
+    return outcomeName;
+  },
+);
+
+export const selectOutcomeOdds = createSelector(
+  [selectState, (_, outcomeId: number) => outcomeId],
+  (state, outcomeId) => {
+    const outcomeOdds = bettingApi.endpoints.getEvents.select()(state)?.data?.outcomes.records[outcomeId]?.odds || 0;
+    return outcomeOdds.toFixed(2);
+  },
+);
+
 // ---
 
 export type CouponSelection = { gameId: number; outcomeId: number };
@@ -104,46 +130,42 @@ export type ResolvedCouponItem = {
   odds: number;
 };
 
-export const selectResolvedCouponLength = createSelector([selectState], (state) => {
-  const events = bettingApi.endpoints.getEvents.select()(state)?.data?.events || [];
-  const coupons = state.betting.couponOutcomesIds;
-  return (
-    coupons.filter((c) => {
-      const ev = events.find((e) => e.eventGames.some((g) => g.gameId === c.gameId));
-      const game = ev?.eventGames.find((g) => g.gameId === c.gameId);
-      const outcome = game?.outcomes.find((o) => o.outcomeId === c.outcomeId);
-      return Boolean(outcome);
-    }).length || 0
-  );
+const selectCouponOutcomes = createSelector([selectState], (state) => {
+  const outcomes = bettingApi.endpoints.getEvents.select()(state)?.data?.outcomes.records || {};
+  const couponOutcomes = state.betting.coupon.map((item) => {
+    const outcome = outcomes[item.outcomeId];
+    const event = bettingApi.endpoints.getEvents.select()(state)?.data?.events.records[outcome?.eventId ?? 0];
+    return {
+      gameId: outcome?.gameId ?? 0,
+      outcomeId: item.outcomeId,
+      eventName: event?.name ?? "Unknown",
+      outcomeName: outcome?.name ?? "Unknown",
+      odds: outcome?.odds ?? 0,
+    };
+  });
+  return couponOutcomes;
+});
+
+export const selectCouponOutcomesIds = createSelector([selectState], (state) => {
+  const couponOutcomesIds = state.betting.coupon.map((item) => item.outcomeId);
+  return couponOutcomesIds;
+});
+
+export const selectCouponLength = createSelector([selectState], (state) => {
+  const couponLength = state.betting.coupon.length;
+  return couponLength;
 });
 
 export const selectCouponTotal = createSelector([selectState], (state) => {
-  const events = bettingApi.endpoints.getEvents.select()(state)?.data?.events || [];
-  const coupon = state.betting.couponOutcomesIds;
-  const resolved = coupon.map((c) => {
-    const ev = events.find((e) => e.eventGames.some((g) => g.gameId === c.gameId));
-    const game = ev?.eventGames.find((g) => g.gameId === c.gameId);
-    const outcome = game?.outcomes.find((o) => o.outcomeId === c.outcomeId);
-    return outcome?.outcomeOdds ?? 1;
-  });
-  return resolved.reduce((acc, odds) => acc * odds, 1);
+  const couponOutcomes = selectCouponOutcomes(state);
+  const couponTotal = couponOutcomes.reduce((acc, item) => acc + item.odds, 0);
+  return couponTotal.toFixed(2);
 });
 
-export const selectResolvedCouponItem = () =>
-  createSelector(
-    [selectState, (_: any, gameId: number) => gameId, (_: any, _g: number, outcomeId: number) => outcomeId],
-    (state, gameId, outcomeId) => {
-      const events = bettingApi.endpoints.getEvents.select()(state)?.data?.events || [];
-
-      const ev = events.find((e) => e.eventGames.some((g) => g.gameId === gameId));
-      const game = ev?.eventGames.find((g) => g.gameId === gameId);
-      const outcome = game?.outcomes.find((o) => o.outcomeId === outcomeId);
-      return {
-        gameId,
-        outcomeId,
-        eventName: ev?.eventName ?? "Unknown",
-        outcomeName: outcome?.outcomeName ?? "-",
-        odds: outcome?.outcomeOdds ?? 0,
-      };
-    },
-  );
+// export const selectCouponItem = createSelector(
+//   [selectState, (_: any, outcomeId: number) => outcomeId],
+//   (state, outcomeId) => {
+//     const couponItem = bettingApi.endpoints.getEvents.select()(state)?.data?.outcomes.records[outcomeId];
+//     return couponItem;
+//   },
+// );

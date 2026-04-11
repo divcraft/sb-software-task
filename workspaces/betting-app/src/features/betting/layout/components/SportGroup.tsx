@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CountryGroup } from "./CountryGroup";
 import { selectCountryIds, selectSportName } from "features/betting";
-import { useAppSelector } from 'store';
+import { useAppSelector } from "store";
 
 type Props = {
   sportId: number;
@@ -15,8 +15,6 @@ export const SportGroup: React.FC<Props> = ({ sportId }) => {
 
   console.log("SportGroup", sportName, countryIds);
 
-  if (!countryIds || !sportName) return null;
-
   return (
     <section className="bg-white rounded-md shadow-sm overflow-hidden">
       <header
@@ -24,7 +22,6 @@ export const SportGroup: React.FC<Props> = ({ sportId }) => {
         onClick={() => setOpen((v) => !v)}
       >
         <div className="flex items-center space-x-3">
-          <span className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-xs">⚽</span>
           <div className="text-sm font-semibold">{sportName}</div>
         </div>
         <div className="text-sm">{open ? "▾" : "▸"}</div>
@@ -33,7 +30,7 @@ export const SportGroup: React.FC<Props> = ({ sportId }) => {
       {open && (
         <div>
           {countryIds.map((countryId) => {
-            return <CountryGroup key={countryId} countryId={countryId} sportId={sportId} />;
+            return <CountryGroup key={countryId} countryId={countryId} />;
           })}
         </div>
       )}

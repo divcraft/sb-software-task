@@ -10,7 +10,7 @@ export const BettingView = () => {
     <div className="mx-auto px-4 py-6">
       <div className="flex w-full gap-6">
         <FeedGroup />
-        {/* <Coupon /> */}
+        <Coupon />
       </div>
       {/* <MobileCoupon /> */}
     </div>
