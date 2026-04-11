@@ -1,6 +1,6 @@
 import React from "react";
-import CouponSummary from "./CouponSummary";
-import { CouponList } from "./CouponList";
+import CouponSummary from "./components/CouponSummary";
+import { CouponList } from "./components/CouponList";
 
 export const Coupon: React.FC = () => {
   return (

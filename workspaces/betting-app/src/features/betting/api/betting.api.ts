@@ -21,7 +21,7 @@ export const bettingApi = createApi({
             case "OUTCOMES_UPDATE":
               updateCachedData((draft) => {
                 msg.payload.forEach((update) => {
-                  const outcome = draft.outcomes.records[update.outcomeId] ?? null;
+                  const outcome = draft.outcomes[update.outcomeId] ?? null;
 
                   if (!outcome) {
                     console.warn("Received update for unknown outcomeId", update.outcomeId);
@@ -29,7 +29,7 @@ export const bettingApi = createApi({
                   }
 
                   const updatedOutcome = { ...outcome, odds: update.newOdds };
-                  draft.outcomes.records[update.outcomeId] = updatedOutcome;
+                  draft.outcomes[update.outcomeId] = updatedOutcome;
                 });
               });
               break;

@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppSelector } from "store";
-import { selectCouponTotal } from "../../state/betting.selectors";
+import { selectCouponTotal } from "features/coupon";
 
 export const CouponTotal: React.FC = () => {
   const couponTotal = useAppSelector(selectCouponTotal);

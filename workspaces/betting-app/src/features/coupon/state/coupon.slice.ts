@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface BettingState {
-  displayedOutcomesIds: Array<number>;
+  //   displayedOutcomesIds: Array<number>;
   coupon: Array<{
     gameId: number;
     outcomeId: number;
@@ -10,18 +10,18 @@ export interface BettingState {
 }
 
 const initialState: BettingState = {
-  displayedOutcomesIds: [],
+  //   displayedOutcomesIds: [],
   coupon: [],
   multiplier: null,
 };
 
-export const bettingSlice = createSlice({
-  name: "betting",
+export const couponSlice = createSlice({
+  name: "coupon",
   initialState,
   reducers: {
-    subscribeOutcomesByCountry(state, action: PayloadAction<Array<number>>) {
-      state.displayedOutcomesIds = action.payload;
-    },
+    // subscribeOutcomesByCountry(state, action: PayloadAction<Array<number>>) {
+    //   state.displayedOutcomesIds = action.payload;
+    // },
     setCoupon(state, action: PayloadAction<{ gameId: number; outcomeId: number }>) {
       const { gameId, outcomeId } = action.payload;
 
@@ -41,5 +41,5 @@ export const bettingSlice = createSlice({
   },
 });
 
-export const { subscribeOutcomesByCountry, setCoupon, setMultiplier } = bettingSlice.actions;
-export const bettingReducer = bettingSlice.reducer;
+export const { setCoupon, setMultiplier } = couponSlice.actions;
+export const couponReducer = couponSlice.reducer;

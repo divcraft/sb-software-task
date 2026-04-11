@@ -50,86 +50,54 @@ interface SportType {
 // ---
 
 export interface BettingStateType {
-  sports: {
-    ids: Array<number>;
-    records: Record<number, SportType>;
-  };
-  countries: {
-    ids: Array<number>;
-    records: Record<number, CountryType>;
-  };
-  events: {
-    ids: Array<number>;
-    records: Record<number, EventType>;
-  };
-  games: {
-    ids: Array<number>;
-    records: Record<number, GameType>;
-  };
-  outcomes: {
-    ids: Array<number>;
-    records: Record<number, OutcomeType>;
-  };
+  sports: Record<number, SportType>;
+  countries: Record<number, CountryType>;
+  events: Record<number, EventType>;
+  games: Record<number, GameType>;
+  outcomes: Record<number, OutcomeType>;
 }
 
 export const convertToStateType = (eventsRes: EventsResponseType): BettingStateType => {
-  const sports: BettingStateType["sports"] = {
-    ids: [],
-    records: {},
-  };
-  const countries: BettingStateType["countries"] = {
-    ids: [],
-    records: {},
-  };
-  const events: BettingStateType["events"] = {
-    ids: [],
-    records: {},
-  };
-  const games: BettingStateType["games"] = {
-    ids: [],
-    records: {},
-  };
-  const outcomes: BettingStateType["outcomes"] = {
-    ids: [],
-    records: {},
-  };
+  const sports: BettingStateType["sports"] = {};
+  const countries: BettingStateType["countries"] = {};
+  const events: BettingStateType["events"] = {};
+  const games: BettingStateType["games"] = {};
+  const outcomes: BettingStateType["outcomes"] = {};
 
   eventsRes.forEach((event) => {
     const sportId = event.category1Id;
     const countryId = event.category2Id;
     const eventId = event.eventId;
 
-    if (!sports.records[sportId]) {
-      sports.records[sportId] = {
+    if (!sports[sportId]) {
+      sports[sportId] = {
         id: sportId,
         name: event.category1Name,
         countryIds: [],
       };
-      sports.ids.push(sportId);
     }
 
-    const countryIds = sports.records[sportId].countryIds;
+    const countryIds = sports[sportId].countryIds;
     if (!countryIds.includes(countryId)) {
       countryIds.push(countryId);
     }
 
-    if (!countries.records[countryId]) {
-      countries.records[countryId] = {
+    if (!countries[countryId]) {
+      countries[countryId] = {
         id: countryId,
         sportId,
         name: event.category2Name,
         eventIds: [],
       };
-      countries.ids.push(countryId);
     }
 
-    const eventIds = countries.records[countryId].eventIds;
+    const eventIds = countries[countryId].eventIds;
     if (!eventIds.includes(eventId)) {
       eventIds.push(eventId);
     }
 
-    if (!events.records[eventId]) {
-      events.records[eventId] = {
+    if (!events[eventId]) {
+      events[eventId] = {
         id: eventId,
         sportId,
         countryId,
@@ -139,17 +107,15 @@ export const convertToStateType = (eventsRes: EventsResponseType): BettingStateT
         isCustomBetAvailable: event.isCustomBetAvailable,
         gameIds: [],
       };
-      events.ids.push(eventId);
     }
 
-
     const gameIds = event.eventGames.map((g) => g.gameId);
-    events.records[eventId].gameIds = gameIds;
+    events[eventId].gameIds = gameIds;
 
     gameIds.forEach((gameId) => {
       const game = event.eventGames.find((g) => g.gameId === gameId);
       if (!game) return;
-      games.records[gameId] = {
+      games[gameId] = {
         id: gameId,
         eventId,
         countryId,
@@ -158,10 +124,9 @@ export const convertToStateType = (eventsRes: EventsResponseType): BettingStateT
         type: game.gameType,
         outcomeIds: game.outcomes.map((o) => o.outcomeId),
       };
-      games.ids.push(gameId);
 
       game.outcomes.forEach((outcome) => {
-        outcomes.records[outcome.outcomeId] = {
+        outcomes[outcome.outcomeId] = {
           id: outcome.outcomeId,
           gameId,
           eventId,
@@ -171,7 +136,6 @@ export const convertToStateType = (eventsRes: EventsResponseType): BettingStateT
           odds: outcome.outcomeOdds,
           position: outcome.outcomePosition,
         };
-        outcomes.ids.push(outcome.outcomeId);
       });
     });
   });

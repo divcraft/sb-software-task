@@ -1,17 +1,12 @@
 "use client";
 import React from "react";
-import { useGetEventsQuery } from "../api/betting.api";
+import { useGetEventsQuery } from "features/betting";
 import BettingView from "./BettingView";
-import { selectIsError, selectIsLoading } from "../state/betting.selectors";
-import { useAppSelector } from "store";
 
 export const BettingLayout: React.FC = () => {
   const { isLoading, isError } = useGetEventsQuery(undefined, {
     selectFromResult: ({ isLoading, isError }) => ({ isLoading, isError }),
   });
-
-  // const isLoading = useAppSelector(selectIsLoading)
-  //   const isError = useAppSelector(selectIsError)
 
   console.log("BettingLayout", isLoading, isError);
 

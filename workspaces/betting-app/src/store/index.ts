@@ -1,15 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { bettingReducer, bettingApi } from "features/betting";
+import { bettingApi } from "features/betting";
+import { couponReducer } from "features/coupon";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      betting: bettingReducer,
+      coupon: couponReducer,
       [bettingApi.reducerPath]: bettingApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(bettingApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(bettingApi.middleware),
   });
 };
 

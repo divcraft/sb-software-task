@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppSelector } from "store";
 import { selectEventNameByOutcomeId, selectOutcomeName } from "features/betting";
-import OddsItem from "./OddsItem";
+import { CouponOdds } from "features/coupon/layout/components/CouponOdds";
 
 type Props = {
   outcomeId: number;
@@ -16,7 +16,7 @@ export const CouponItem: React.FC<Props> = ({ outcomeId }) => {
       <div className="text-sm truncate">
         {eventName} — {outcomeName}
       </div>
-      <OddsItem outcomeId={outcomeId} />
+      <CouponOdds outcomeId={outcomeId} />
     </div>
   );
 };

@@ -1,8 +1,7 @@
 "use client";
 
+import { Coupon } from "features/coupon/layout/Coupon";
 import { FeedGroup } from "./components/EventGroup";
-import { MobileCoupon } from "./components/MobileCoupon";
-import { Coupon } from "./components/Coupon";
 
 export const BettingView = () => {
   console.log("BettingView");
@@ -12,7 +11,6 @@ export const BettingView = () => {
         <FeedGroup />
         <Coupon />
       </div>
-      {/* <MobileCoupon /> */}
     </div>
   );
 };
