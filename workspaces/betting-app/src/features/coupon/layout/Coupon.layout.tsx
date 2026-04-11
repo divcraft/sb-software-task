@@ -1,8 +1,8 @@
-import React from "react";
-import CouponSummary from "./components/CouponSummary";
+import { FC } from "react";
+import { CouponSummary } from "./components/CouponSummary";
 import { CouponList } from "./components/CouponList";
 
-export const Coupon: React.FC = () => {
+export const CouponLayout: FC = () => {
   return (
     <aside className="md:col-span-1">
       <div className="hidden md:block md:w-80 bg-white rounded-md shadow p-4 md:sticky md:top-6">

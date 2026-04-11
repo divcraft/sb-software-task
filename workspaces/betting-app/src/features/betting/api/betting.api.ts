@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { BettingSocket } from "./betting.socket";
 import { ServerMessage } from "shared/types";
-import { BettingStateType, convertToStateType } from "./utils";
+import { BettingStateType, convertToStateType } from "features/betting";
 
 export const bettingApi = createApi({
   reducerPath: "bettingApi",

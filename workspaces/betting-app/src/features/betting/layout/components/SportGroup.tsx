@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import { CountryGroup } from "./CountryGroup";
 import { selectCountryIds, selectSportName } from "features/betting";
 import { useAppSelector } from "store";
 
-type Props = {
+interface PropsType {
   sportId: number;
-};
+}
 
-export const SportGroup: React.FC<Props> = ({ sportId }) => {
+export const SportGroup: FC<PropsType> = ({ sportId }) => {
   const [open, setOpen] = useState(true);
 
   const sportName = useAppSelector((state) => selectSportName(state, sportId));
   const countryIds = useAppSelector((state) => selectCountryIds(state, sportId));
 
-  console.log("SportGroup", sportName, countryIds);
+  console.log("SportGroup", sportName);
 
   return (
     <section className="bg-white rounded-md shadow-sm overflow-hidden">

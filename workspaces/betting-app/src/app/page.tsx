@@ -1,9 +1,9 @@
-import { BettingLayout } from "features/betting";
+import { BettingView } from "views";
 
 export default function Home() {
   return (
     <main>
-      <BettingLayout />
+      <BettingView />
     </main>
   );
 }

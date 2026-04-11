@@ -1,10 +1,10 @@
-import React from "react";
+import { FC } from "react";
 import { CouponItem } from "./CouponItem";
 import { useAppSelector } from "store";
 import { selectCouponOutcomesIds } from "features/coupon";
 import { shallowEqual } from "react-redux";
 
-export const CouponList: React.FC = () => {
+export const CouponList: FC = () => {
   const couponOutcomesIds = useAppSelector(selectCouponOutcomesIds, shallowEqual);
   console.debug("CouponList");
 

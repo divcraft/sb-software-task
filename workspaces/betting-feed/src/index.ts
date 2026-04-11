@@ -87,7 +87,6 @@ const updateOdds = () => {
 };
 
 const broadcast = (updates: ServerMessage) => {
-  // console.log("Broadcasting updates", updates);
   for (const ws of wss.clients) {
     const client = clientFeed.get(ws);
 

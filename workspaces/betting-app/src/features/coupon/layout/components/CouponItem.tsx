@@ -1,13 +1,13 @@
-import React from "react";
+import { FC } from "react";
 import { useAppSelector } from "store";
 import { selectEventNameByOutcomeId, selectOutcomeName } from "features/betting";
-import { CouponOdds } from "features/coupon/layout/components/CouponOdds";
+import { CouponOdds } from "./CouponOdds";
 
-type Props = {
+interface PropsType {
   outcomeId: number;
-};
+}
 
-export const CouponItem: React.FC<Props> = ({ outcomeId }) => {
+export const CouponItem: FC<PropsType> = ({ outcomeId }) => {
   const eventName = useAppSelector((state) => selectEventNameByOutcomeId(state, outcomeId));
   const outcomeName = useAppSelector((state) => selectOutcomeName(state, outcomeId));
 
@@ -20,5 +20,3 @@ export const CouponItem: React.FC<Props> = ({ outcomeId }) => {
     </div>
   );
 };
-
-export default CouponItem;
