@@ -1,139 +1,186 @@
 import { EventsResponseType } from "shared/types";
 
-export interface NormalizedOutcome {
-  outcomeId: number;
-  outcomeName: string;
-  outcomeOdds: number;
-  outcomePosition: number;
-}
+// ---
 
-export interface NormalizedGame {
+interface OutcomeType {
+  id: number;
   gameId: number;
-  gameName: string;
-  gameType: number;
-  outcomes: Record<number, NormalizedOutcome>;
-  outcomesIds: number[];
-}
-
-export interface NormalizedEvent {
   eventId: number;
-  eventName: string;
-  eventStart: number;
-  eventType: number;
-  isCustomBetAvailable: boolean;
-  games: Record<number, NormalizedGame>;
-  gamesIds: number[];
+  countryId: number;
+  sportId: number;
+  name: string;
+  odds: number;
+  position: number;
 }
 
-export interface NormalizedCountry {
+interface GameType {
+  id: number;
+  eventId: number;
   countryId: number;
-  countryName: string;
-  events: Record<number, NormalizedEvent>;
+  sportId: number;
+  name: string;
+  type: number;
+  outcomeIds: number[];
+}
+
+interface EventType {
+  id: number;
+  countryId: number;
+  sportId: number;
+  name: string;
+  start: number;
+  type: number;
+  isCustomBetAvailable: boolean;
+  gameIds: number[];
+}
+
+interface CountryType {
+  id: number;
+  sportId: number;
+  name: string;
   eventIds: number[];
 }
 
-export interface NormalizedSport {
-  sportId: number;
-  sportName: string;
-  countries: Record<number, NormalizedCountry>;
+interface SportType {
+  id: number;
+  name: string;
   countryIds: number[];
 }
 
+// ---
+
 export interface BettingStateType {
-  sports: Record<number, NormalizedSport>;
-  sportIds: number[];
-  sportNames: string[];
-  outcomesIds: Record<
-    number,
-    {
-      sportId: number;
-      countryId: number;
-      eventId: number;
-      gameId: number;
-      outcomeId: number;
-    }
-  >;
+  sports: {
+    ids: Array<number>;
+    records: Record<number, SportType>;
+  };
+  countries: {
+    ids: Array<number>;
+    records: Record<number, CountryType>;
+  };
+  events: {
+    ids: Array<number>;
+    records: Record<number, EventType>;
+  };
+  games: {
+    ids: Array<number>;
+    records: Record<number, GameType>;
+  };
+  outcomes: {
+    ids: Array<number>;
+    records: Record<number, OutcomeType>;
+  };
 }
 
-export const convertToStateType = (
-  events: EventsResponseType,
-): BettingStateType => {
-  const feed: BettingStateType = {
-    sports: {},
-    sportIds: [],
-    sportNames: [],
-    outcomesIds: {},
+export const convertToStateType = (eventsRes: EventsResponseType): BettingStateType => {
+  const sports: BettingStateType["sports"] = {
+    ids: [],
+    records: {},
+  };
+  const countries: BettingStateType["countries"] = {
+    ids: [],
+    records: {},
+  };
+  const events: BettingStateType["events"] = {
+    ids: [],
+    records: {},
+  };
+  const games: BettingStateType["games"] = {
+    ids: [],
+    records: {},
+  };
+  const outcomes: BettingStateType["outcomes"] = {
+    ids: [],
+    records: {},
   };
 
-  events.forEach((event) => {
+  eventsRes.forEach((event) => {
     const sportId = event.category1Id;
     const countryId = event.category2Id;
     const eventId = event.eventId;
 
-    if (!feed.sports[sportId]) {
-      feed.sports[sportId] = {
-        sportId,
-        sportName: event.category1Name,
-        countries: {},
+    if (!sports.records[sportId]) {
+      sports.records[sportId] = {
+        id: sportId,
+        name: event.category1Name,
         countryIds: [],
       };
-      feed.sportIds.push(sportId);
-      feed.sportNames.push(event.category1Name);
+      sports.ids.push(sportId);
     }
 
-    if (!feed.sports[sportId].countries[countryId]) {
-      feed.sports[sportId].countries[countryId] = {
-        countryId,
-        countryName: event.category2Name,
-        events: {},
+    const countryIds = sports.records[sportId].countryIds;
+    if (!countryIds.includes(countryId)) {
+      countryIds.push(countryId);
+    }
+
+    if (!countries.records[countryId]) {
+      countries.records[countryId] = {
+        id: countryId,
+        sportId,
+        name: event.category2Name,
         eventIds: [],
       };
-      feed.sports[sportId].countryIds.push(countryId);
+      countries.ids.push(countryId);
     }
 
-    const games = Object.fromEntries(
-      event.eventGames.map((game) => [
-        game.gameId,
-        {
-          gameId: game.gameId,
-          gameName: game.gameName,
-          gameType: game.gameType,
-          outcomesIds: game.outcomes.map((o) => o.outcomeId),
-          outcomes: Object.fromEntries(
-            game.outcomes.map((outcome) => {
-              feed.outcomesIds[outcome.outcomeId] = {
-                sportId,
-                countryId,
-                eventId,
-                gameId: game.gameId,
-                outcomeId: outcome.outcomeId,
-              };
-              return [
-                outcome.outcomeId,
-                {
-                  outcomeId: outcome.outcomeId,
-                  outcomeName: outcome.outcomeName,
-                  outcomeOdds: outcome.outcomeOdds,
-                  outcomePosition: outcome.outcomePosition,
-                },
-              ];
-            }),
-          ),
-        },
-      ]),
-    );
+    const eventIds = countries.records[countryId].eventIds;
+    if (!eventIds.includes(eventId)) {
+      eventIds.push(eventId);
+    }
 
-    feed.sports[sportId].countries[countryId].events[eventId] = {
-      eventId,
-      eventName: event.eventName,
-      eventStart: event.eventStart,
-      eventType: event.eventType,
-      isCustomBetAvailable: event.isCustomBetAvailable,
-      games,
-      gamesIds: Object.keys(games).map(Number),
-    };
-    feed.sports[sportId].countries[countryId].eventIds.push(eventId);
+    if (!events.records[eventId]) {
+      events.records[eventId] = {
+        id: eventId,
+        sportId,
+        countryId,
+        name: event.eventName,
+        start: event.eventStart,
+        type: event.eventType,
+        isCustomBetAvailable: event.isCustomBetAvailable,
+        gameIds: [],
+      };
+      events.ids.push(eventId);
+    }
+
+
+    const gameIds = event.eventGames.map((g) => g.gameId);
+    events.records[eventId].gameIds = gameIds;
+
+    gameIds.forEach((gameId) => {
+      const game = event.eventGames.find((g) => g.gameId === gameId);
+      if (!game) return;
+      games.records[gameId] = {
+        id: gameId,
+        eventId,
+        countryId,
+        sportId,
+        name: game.gameName,
+        type: game.gameType,
+        outcomeIds: game.outcomes.map((o) => o.outcomeId),
+      };
+      games.ids.push(gameId);
+
+      game.outcomes.forEach((outcome) => {
+        outcomes.records[outcome.outcomeId] = {
+          id: outcome.outcomeId,
+          gameId,
+          eventId,
+          countryId,
+          sportId,
+          name: outcome.outcomeName,
+          odds: outcome.outcomeOdds,
+          position: outcome.outcomePosition,
+        };
+        outcomes.ids.push(outcome.outcomeId);
+      });
+    });
   });
 
-  return feed;
+  return {
+    sports,
+    countries,
+    events,
+    games,
+    outcomes,
+  };
 };

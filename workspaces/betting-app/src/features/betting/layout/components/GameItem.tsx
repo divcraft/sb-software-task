@@ -1,7 +1,7 @@
 import React from "react";
 import { OutcomeButton } from "./OutcomeButton";
 import { selectGameName, selectOutcomesIds } from "features/betting";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "store";
 
 type Props = {
   gameId: number;
@@ -11,8 +11,11 @@ type Props = {
 };
 
 export const GameItem: React.FC<Props> = ({ gameId, sportId, countryId, eventId }) => {
-  const outcomesIds = useSelector((state) => selectOutcomesIds(state, sportId, countryId, eventId, gameId));
-  const gameName = useSelector((state) => selectGameName(state, sportId, countryId, eventId, gameId));
+  const outcomesIds = useAppSelector((state) => selectOutcomesIds(state, gameId));
+  const gameName = useAppSelector((state) => selectGameName(state, gameId));
+  console.log("GameItem", gameName, outcomesIds);
+  //   const outcomesIds = useAppSelector((state) => selectOutcomesIds(state, sportId, countryId, eventId, gameId));
+  //   const gameName = useAppSelector((state) => selectGameName(state, sportId, countryId, eventId, gameId));
 
   if (!outcomesIds || !gameName) return null;
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { GameItem } from "./GameItem";
 import { selectEventName, selectGamesIds } from "features/betting";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "store";
 
 type Props = {
   sportId: number;
@@ -10,8 +10,8 @@ type Props = {
 };
 
 export const GameGroup: React.FC<Props> = ({ eventId, sportId, countryId }) => {
-  const gamesIds = useSelector((state) => selectGamesIds(state, sportId, countryId, eventId));
-  const eventName = useSelector((state) => selectEventName(state, sportId, countryId, eventId));
+  const gamesIds = useAppSelector((state) => selectGamesIds(state, eventId));
+  const eventName = useAppSelector((state) => selectEventName(state, eventId));
 
   if (!gamesIds || !eventName) return null;
   console.log("GameGroup", eventName, gamesIds);

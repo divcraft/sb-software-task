@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { CountryGroup } from "./CountryGroup";
 import { selectCountryIds, selectSportName } from "features/betting";
-import { useSelector } from "react-redux";
+import { useAppSelector } from 'store';
 
 type Props = {
   sportId: number;
@@ -10,8 +10,8 @@ type Props = {
 export const SportGroup: React.FC<Props> = ({ sportId }) => {
   const [open, setOpen] = useState(true);
 
-  const countryIds = useSelector((state) => selectCountryIds(state, sportId));
-  const sportName = useSelector((state) => selectSportName(state, sportId));
+  const sportName = useAppSelector((state) => selectSportName(state, sportId));
+  const countryIds = useAppSelector((state) => selectCountryIds(state, sportId));
 
   console.log("SportGroup", sportName, countryIds);
 

@@ -9,10 +9,7 @@ export const bettingApi = createApi({
   endpoints: (build) => ({
     getEvents: build.query<BettingStateType, void>({
       query: () => undefined,
-      async onCacheEntryAdded(
-        _arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
-      ) {
+      async onCacheEntryAdded(_arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
         const socket = BettingSocket.get();
 
         socket.setMessageHandler((msg: ServerMessage) => {
@@ -24,30 +21,15 @@ export const bettingApi = createApi({
             case "OUTCOMES_UPDATE":
               updateCachedData((draft) => {
                 msg.payload.forEach((update) => {
-                  const outcomeData = draft.outcomesIds[update.outcomeId];
-                  if (!outcomeData) {
-                    console.warn(
-                      "Received update for unknown outcomeId 1",
-                      update.outcomeId,
-                    );
-                    return;
-                  }
-                  const { sportId, countryId, eventId, gameId, outcomeId } =
-                    outcomeData;
-                  const outcome =
-                    draft.sports[sportId]?.countries[countryId]?.events[eventId]
-                      ?.games[gameId]?.outcomes[outcomeId];
+                  const outcome = draft.outcomes.records[update.outcomeId] ?? null;
                   if (!outcome) {
-                    console.warn(
-                      "Received update for unknown outcomeId 2",
-                      draft.sports[sportId]?.countries[countryId]?.events[
-                        eventId
-                      ]?.games,
-                      gameId,
-                    );
+                    console.warn("Received update for unknown outcomeId 0", update.outcomeId);
                     return;
                   }
-                  outcome.outcomeOdds = update.newOdds;
+
+                  const updatedOutcome = { ...outcome, outcomeOdds: update.newOdds };
+
+                  draft.outcomes.records[update.outcomeId] = updatedOutcome;
                 });
               });
               break;

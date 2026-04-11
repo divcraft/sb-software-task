@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GameGroup } from "./GameGroup";
 import { selectCountryName, selectEventsIds, selectEventsLength } from "features/betting";
-import { useSelector } from "react-redux";
+import { useAppSelector } from 'store';
 
 type Props = {
   sportId: number;
@@ -11,9 +11,13 @@ type Props = {
 export const CountryGroup: React.FC<Props> = ({ sportId, countryId }) => {
   const [open, setOpen] = useState(false);
 
-  const countryName = useSelector((state) => selectCountryName(state, sportId, countryId));
-  const eventsIds = useSelector((state) => selectEventsIds(state, sportId, countryId));
-  const eventsLength = useSelector((state) => selectEventsLength(state, sportId, countryId));
+  const countryName = useAppSelector((state) => selectCountryName(state, countryId));
+  const eventsIds = useAppSelector((state) => selectEventsIds(state, countryId));
+  const eventsLength = useAppSelector((state) => selectEventsLength(state, countryId));
+
+//   const countryName = useAppSelector((state) => selectCountryName(state, sportId, countryId));
+//   const eventsIds = useAppSelector((state) => selectEventsIds(state, sportId, countryId));
+//   const eventsLength = useAppSelector((state) => selectEventsLength(state, sportId, countryId));
 
   console.log("CountryGroup", countryName, eventsLength, eventsIds);
 

@@ -1,10 +1,10 @@
 "use client";
 import { selectSportIds } from "features/betting";
 import { SportGroup } from "./SportGroup";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "store";
 
 export const FeedGroup = () => {
-  const sportIds = useSelector(selectSportIds);
+  const sportIds = useAppSelector(selectSportIds);
   console.log("FeedGroup", sportIds);
   return (
     <div className="w-full">
