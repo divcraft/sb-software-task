@@ -40,5 +40,7 @@ export const selectBetslipLength = createSelector([selectState], (state) => {
 export const selectBetslipTotal = createSelector([selectState], (state) => {
   const betslipOutcomes = selectBetslipOutcomes(state);
   const betslipTotal = betslipOutcomes.reduce((acc, item) => acc + item.odds, 0);
-  return betslipTotal.toFixed(2);
+  const stake = state.betslip.stake;
+  const withStake = betslipTotal * stake;
+  return withStake.toFixed(2);
 });

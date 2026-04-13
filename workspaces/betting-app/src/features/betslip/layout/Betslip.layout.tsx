@@ -1,12 +1,21 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { BetslipList } from "./components/BetslipList";
 import { BetslipSummary } from "./components/BetslipSummary";
 
 export const BetslipLayout: FC = () => {
+  const [show, setShow] = useState(false);
   return (
-    <aside className="md:col-span-1">
-      <div className="hidden md:block md:w-80 bg-white rounded-md shadow p-4 md:sticky md:top-6">
-        <h3 className="text-sm font-semibold text-gray-700 mb-3">KUPON</h3>
+    <aside
+      className={`fixed bottom-4 ${!show && `transform translate-y-[calc(100%-40px)]`} right-6 col-span-1 lg:sticky lg:block lg:translate-0`}
+    >
+      <div className="block w-100 bg-gray-100 lg:bg-white rounded-md lg:shadow p-4">
+        <div
+          onClick={() => setShow((show) => !show)}
+          className="flex items-center justify-between mb-3 cursor-pointer lg:cursor-auto"
+        >
+          <h3 className="text-sm font-semibold text-gray-700">KUPON</h3>
+          <button className="lg:hidden cursor-pointer p-1">{show ? "▾" : "▸"}</button>
+        </div>
         <BetslipList />
         <BetslipSummary />
         <div className="mt-4">

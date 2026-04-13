@@ -17,7 +17,7 @@ export const GameItem: FC<PropsType> = ({ gameId }) => {
   return (
     <div className="flex gap-1 text-sm">
       {outcomesIds.map((outcomeId) => (
-        <Tile>
+        <Tile key={outcomeId}>
           <OutcomeButton key={outcomeId} outcomeId={outcomeId} gameId={gameId} />
         </Tile>
       ))}

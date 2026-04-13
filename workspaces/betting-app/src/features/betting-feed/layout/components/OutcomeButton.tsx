@@ -33,7 +33,7 @@ export const OutcomeButton: FC<PropsType> = ({ outcomeId, gameId }) => {
   return (
     <button
       onClick={() => dispatch(setBet({ gameId, outcomeId }))}
-      className={`w-full h-full rounded-md text-sm font-medium border transition-colors flex items-center justify-center ${
+      className={`cursor-pointer w-full h-full rounded-md text-sm font-medium border transition-colors flex items-center justify-center ${
         isInBetslip
           ? `text-white border-indigo-700 ${flash || "bg-indigo-700 "}`
           : ` text-gray-800 hover:bg-gray-50 border-gray-200 ${flash || "bg-white"}`

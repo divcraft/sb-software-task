@@ -6,13 +6,13 @@ export interface BettingState {
     gameId: number;
     outcomeId: number;
   }>;
-  multiplier: number | null;
+  stake: number;
 }
 
 const initialState: BettingState = {
   //   displayedOutcomesIds: [],
   bets: [],
-  multiplier: null,
+  stake: 1,
 };
 
 export const betslipSlice = createSlice({
@@ -35,11 +35,11 @@ export const betslipSlice = createSlice({
         state.bets.push({ gameId, outcomeId });
       }
     },
-    setMultiplier(state, action: PayloadAction<number | null>) {
-      state.multiplier = action.payload;
+    setStake(state, action: PayloadAction<number>) {
+      state.stake = action.payload;
     },
   },
 });
 
-export const { setBet, setMultiplier } = betslipSlice.actions;
+export const { setBet, setStake } = betslipSlice.actions;
 export const betslipReducer = betslipSlice.reducer;

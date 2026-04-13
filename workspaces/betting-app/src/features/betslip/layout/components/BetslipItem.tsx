@@ -12,9 +12,14 @@ export const BetslipItem: FC<PropsType> = ({ outcomeId }) => {
   const outcomeName = useAppSelector((state) => selectOutcomeName(state, outcomeId));
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex justify-between py-1">
       <div className="text-sm truncate">
-        {eventName} — {outcomeName}
+        <div className='font-semibold'>
+          {eventName}
+        </div>
+        <div>
+          Wynik: {outcomeName}
+        </div>
       </div>
       <BetslipOdds outcomeId={outcomeId} />
     </div>
