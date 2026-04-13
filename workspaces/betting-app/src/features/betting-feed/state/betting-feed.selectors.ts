@@ -68,6 +68,26 @@ export const selectEventName = createSelector([selectState, (_, eventId: number)
   return eventName;
 });
 
+export const selectEventTeams = createSelector([selectState, (_, eventId: number) => eventId], (state, eventId) => {
+  const eventName = selectEventName(state, eventId);
+  const eventTeams = eventName.split("-").map((event) => event.trim());
+  return eventTeams;
+});
+
+export const selectEventDayStart = createSelector([selectState, (_, eventId: number) => eventId], (state, eventId) => {
+  const bettingFeed = selectBettingFeed(state);
+  const start = bettingFeed?.events[eventId]?.start ?? "Unknown";
+  const eventStart = new Date(start).toLocaleString();
+  return eventStart.split(",")[0]?.trim() ?? "Unknown";
+});
+
+export const selectEventTimeStart = createSelector([selectState, (_, eventId: number) => eventId], (state, eventId) => {
+  const bettingFeed = selectBettingFeed(state);
+  const start = bettingFeed?.events[eventId]?.start ?? "Unknown";
+  const eventStart = new Date(start).toLocaleString();
+  return eventStart.split(",")[1]?.trim() ?? "Unknown";
+});
+
 export const selectEventNameByOutcomeId = createSelector(
   [selectState, (_, outcomeId: number) => outcomeId],
   (state, outcomeId) => {
@@ -113,7 +133,7 @@ export const selectOutcomeOdds = createSelector(
   [selectState, (_, outcomeId: number) => outcomeId],
   (state, outcomeId) => {
     const bettingFeed = selectBettingFeed(state);
-    const outcomeOdds = bettingFeed?.outcomes[outcomeId]?.odds.toFixed(2) ?? 0;
+    const outcomeOdds = bettingFeed?.outcomes[outcomeId]?.odds.toFixed(2) ?? "0.00";
     return outcomeOdds;
   },
 );

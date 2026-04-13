@@ -4,16 +4,16 @@ import { selectBettingFeed } from "features/betting-feed";
 
 const selectState = (state: RootState) => state;
 
-const selectCouponOutcomes = createSelector([selectState], (state) => {
+const selectBetslipOutcomes = createSelector([selectState], (state) => {
   const bettingFeed = selectBettingFeed(state);
   const outcomes = bettingFeed?.outcomes ?? {};
 
-  const couponOutcomes = state.betslip.bets.map((item) => {
+  const betslipOutcomes = state.betslip.bets.map((item) => {
     const outcome = outcomes[item.outcomeId];
     const event = bettingFeed?.events[outcome.eventId];
 
     if (!event) {
-      throw Error(`selectCouponOutcomes - cannot fimd event with ID: ${outcome.eventId}`);
+      throw Error(`selectBetslipOutcomes - cannot fimd event with ID: ${outcome.eventId}`);
     }
 
     return {
@@ -24,21 +24,21 @@ const selectCouponOutcomes = createSelector([selectState], (state) => {
       odds: outcome.odds,
     };
   });
-  return couponOutcomes;
+  return betslipOutcomes;
 });
 
-export const selectCouponOutcomesIds = createSelector([selectState], (state) => {
-  const couponOutcomesIds = state.betslip.bets.map((item) => item.outcomeId);
-  return couponOutcomesIds;
+export const selectBetslipOutcomesIds = createSelector([selectState], (state) => {
+  const betslipOutcomesIds = state.betslip.bets.map((item) => item.outcomeId);
+  return betslipOutcomesIds;
 });
 
-export const selectCouponLength = createSelector([selectState], (state) => {
-  const couponLength = state.betslip.bets.length;
-  return couponLength;
+export const selectBetslipLength = createSelector([selectState], (state) => {
+  const betslipLength = state.betslip.bets.length;
+  return betslipLength;
 });
 
-export const selectCouponTotal = createSelector([selectState], (state) => {
-  const couponOutcomes = selectCouponOutcomes(state);
-  const couponTotal = couponOutcomes.reduce((acc, item) => acc + item.odds, 0);
-  return couponTotal.toFixed(2);
+export const selectBetslipTotal = createSelector([selectState], (state) => {
+  const betslipOutcomes = selectBetslipOutcomes(state);
+  const betslipTotal = betslipOutcomes.reduce((acc, item) => acc + item.odds, 0);
+  return betslipTotal.toFixed(2);
 });

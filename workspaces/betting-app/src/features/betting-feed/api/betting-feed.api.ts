@@ -28,7 +28,10 @@ export const bettingFeedApi = createApi({
                     return;
                   }
 
-                  const updatedOutcome = { ...outcome, odds: update.newOdds };
+                  const updatedOutcome: BettingFeedType["outcomes"][0] = {
+                    ...outcome,
+                    odds: update.newOdds,
+                  };
                   draft.outcomes[update.outcomeId] = updatedOutcome;
                 });
               });

@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { useAppSelector } from "store";
-import { selectCouponTotal } from "features/betslip";
+import { selectBetslipTotal } from "features/betslip";
 
 export const BetslipTotal: FC = () => {
-  const couponTotal = useAppSelector(selectCouponTotal);
-  return <div className="font-semibold text-indigo-700">{couponTotal}</div>;
+  const betslipTotal = useAppSelector(selectBetslipTotal);
+  return <div className="font-semibold text-indigo-700">{betslipTotal}</div>;
 };

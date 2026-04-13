@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { CountryGroup } from "./CountryGroup";
 import { selectCountryIds, selectSportName } from "features/betting-feed";
 import { useAppSelector } from "store";
+import { Tile } from "components/shared-ui";
 
 interface PropsType {
   sportId: number;
@@ -16,15 +17,18 @@ export const SportGroup: FC<PropsType> = ({ sportId }) => {
   console.log("SportGroup", sportName);
 
   return (
-    <section className="bg-white rounded-md shadow-sm overflow-hidden">
+    <section className="rounded-md shadow-sm overflow-hidden">
       <header
-        className="flex items-center justify-between px-4 py-3 bg-indigo-800 text-white cursor-pointer"
-        onClick={() => setOpen((v) => !v)}
+        className="flex items-center justify-between px-2 py-2 h-12 bg-indigo-800 text-white cursor-pointer"
+        onClick={() => setOpen((open) => !open)}
       >
-        <div className="flex items-center space-x-3">
-          <div className="text-sm font-semibold">{sportName}</div>
+        <div className="text-sm font-semibold">{sportName}</div>
+        <div className="flex gap-1 text-sm">
+          <Tile className="bg-indigo-600">1</Tile>
+          <Tile className="bg-indigo-600">X</Tile>
+          <Tile className="bg-indigo-600">2</Tile>
+          <Tile className="ml-1.5">{open ? "▾" : "▸"}</Tile>
         </div>
-        <div className="text-sm">{open ? "▾" : "▸"}</div>
       </header>
 
       {open && (
