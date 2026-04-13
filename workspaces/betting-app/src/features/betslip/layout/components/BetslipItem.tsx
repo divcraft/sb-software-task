@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useAppSelector } from "store";
-import { selectEventNameByOutcomeId, selectOutcomeName } from "features/betting";
+import { selectEventNameByOutcomeId, selectOutcomeName } from "features/betting-feed";
 import { BetslipOdds } from "./BetslipOdds";
 
 interface PropsType {

@@ -1,5 +1,5 @@
 "use client";
-import { selectSportIds } from "features/betting";
+import { selectSportIds } from "features/betting-feed";
 import { SportGroup } from "./SportGroup";
 import { useAppSelector } from "store";
 import { shallowEqual } from "react-redux";

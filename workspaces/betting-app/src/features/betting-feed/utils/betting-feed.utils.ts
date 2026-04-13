@@ -1,12 +1,12 @@
 import { EventsResponseType } from "shared/types";
-import { BettingStateType } from "features/betting";
+import { BettingFeedType } from "features/betting-feed";
 
-export const convertToStateType = (eventsRes: EventsResponseType): BettingStateType => {
-  const sports: BettingStateType["sports"] = {};
-  const countries: BettingStateType["countries"] = {};
-  const events: BettingStateType["events"] = {};
-  const games: BettingStateType["games"] = {};
-  const outcomes: BettingStateType["outcomes"] = {};
+export const convertToStateType = (eventsRes: EventsResponseType): BettingFeedType => {
+  const sports: BettingFeedType["sports"] = {};
+  const countries: BettingFeedType["countries"] = {};
+  const events: BettingFeedType["events"] = {};
+  const games: BettingFeedType["games"] = {};
+  const outcomes: BettingFeedType["outcomes"] = {};
 
   eventsRes.forEach((event) => {
     const sportId = event.category1Id;

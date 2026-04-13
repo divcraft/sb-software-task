@@ -1,18 +1,18 @@
 import { ClientMessage, ServerMessage } from "shared/types";
 
-export class BettingSocket {
-  private static instance: BettingSocket | null = null;
+export class BettingFeedSocket {
+  private static instance: BettingFeedSocket | null = null;
   private ws: WebSocket | null = null;
   private subscribers = 0;
   private messageHandler: ((msg: ServerMessage) => void) | null = null;
 
   private constructor(private readonly url: string) {}
 
-  public static get(): BettingSocket {
+  public static get(): BettingFeedSocket {
     const SOCKET_URL = "ws://localhost:4040";
 
     if (!this.instance) {
-      this.instance = new BettingSocket(SOCKET_URL);
+      this.instance = new BettingFeedSocket(SOCKET_URL);
     }
     return this.instance;
   }

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { CountryGroup } from "./CountryGroup";
-import { selectCountryIds, selectSportName } from "features/betting";
+import { selectCountryIds, selectSportName } from "features/betting-feed";
 import { useAppSelector } from "store";
 
 interface PropsType {

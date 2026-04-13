@@ -43,7 +43,7 @@ interface SportType {
   countryIds: number[];
 }
 
-export interface BettingStateType {
+export interface BettingFeedType {
   sports: Record<number, SportType>;
   countries: Record<number, CountryType>;
   events: Record<number, EventType>;

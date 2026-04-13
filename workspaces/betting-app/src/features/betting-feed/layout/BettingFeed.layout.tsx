@@ -1,14 +1,14 @@
 "use client";
 import { FC } from "react";
-import { useGetEventsQuery } from "features/betting";
+import { useGetBettingFeedQuery } from "features/betting-feed";
 import { FeedGroup } from "./components/FeedGroup";
 
-export const BettingLayout: FC = () => {
-  const { isLoading, isError } = useGetEventsQuery(undefined, {
+export const BettingFeedLayout: FC = () => {
+  const { isLoading, isError } = useGetBettingFeedQuery(undefined, {
     selectFromResult: ({ isLoading, isError }) => ({ isLoading, isError }),
   });
 
-  console.log("BettingLayout", { isLoading, isError });
+  console.log("BettingFeedLayout", { isLoading, isError });
 
   if (isLoading) return <div>Loading events...</div>;
   if (isError) return <div>Error loading data</div>;

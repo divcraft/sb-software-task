@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { OutcomeButton } from "./OutcomeButton";
-import { selectGameName, selectOutcomesIds } from "features/betting";
+import { selectGameName, selectOutcomesIds } from "features/betting-feed";
 import { useAppSelector } from "store";
 
 interface PropsType {

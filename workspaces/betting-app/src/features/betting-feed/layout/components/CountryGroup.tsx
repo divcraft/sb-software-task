@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { EventGroup } from "./EventGroup";
-import { selectCountryName, selectEventsIds, selectEventsLength } from "features/betting";
+import { selectCountryName, selectEventsIds, selectEventsLength } from "features/betting-feed";
 import { useAppSelector } from "store";
 
 interface PropsType {

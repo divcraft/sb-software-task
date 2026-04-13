@@ -1,14 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "store";
-import { bettingApi } from "features/betting";
+import { selectBettingFeed } from "features/betting-feed";
 
 const selectState = (state: RootState) => state;
 
 const selectCouponOutcomes = createSelector([selectState], (state) => {
-  const outcomes = bettingApi.endpoints.getEvents.select()(state)?.data?.outcomes || {};
+  const bettingFeed = selectBettingFeed(state);
+  const outcomes = bettingFeed?.outcomes ?? {};
+
   const couponOutcomes = state.betslip.bets.map((item) => {
     const outcome = outcomes[item.outcomeId];
-    const event = bettingApi.endpoints.getEvents.select()(state)?.data?.events[outcome.eventId];
+    const event = bettingFeed?.events[outcome.eventId];
 
     if (!event) {
       throw Error(`selectCouponOutcomes - cannot fimd event with ID: ${outcome.eventId}`);

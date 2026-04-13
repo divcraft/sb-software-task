@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { GameItem } from "./GameItem";
-import { selectEventName, selectGamesIds } from "features/betting";
+import { selectEventName, selectGamesIds } from "features/betting-feed";
 import { useAppSelector } from "store";
 
 interface PropsType {

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "store";
 import { setBet } from "features/betslip";
-import { selectOutcomeOdds } from "features/betting";
+import { selectOutcomeOdds } from "features/betting-feed";
 
 interface PropsType {
   gameId: number;

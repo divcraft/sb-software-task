@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useAppSelector } from "store";
-import { selectOutcomeOdds } from "features/betting";
+import { selectOutcomeOdds } from "features/betting-feed";
 
 interface PropsType {
   outcomeId: number;

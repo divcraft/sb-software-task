@@ -1,16 +1,16 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { BettingSocket } from "./betting.socket";
+import { BettingFeedSocket } from "./betting-feed.socket";
 import { ServerMessage } from "shared/types";
-import { BettingStateType, convertToStateType } from "features/betting";
+import { BettingFeedType, convertToStateType } from "features/betting-feed";
 
-export const bettingApi = createApi({
-  reducerPath: "bettingApi",
+export const bettingFeedApi = createApi({
+  reducerPath: "bettingFeedApi",
   baseQuery: async () => ({ data: null }),
   endpoints: (build) => ({
-    getEvents: build.query<BettingStateType, void>({
+    getBettingFeed: build.query<BettingFeedType, void>({
       query: () => undefined,
       async onCacheEntryAdded(_arg, { updateCachedData, cacheDataLoaded, cacheEntryRemoved }) {
-        const socket = BettingSocket.get();
+        const socket = BettingFeedSocket.get();
 
         socket.setMessageHandler((msg: ServerMessage) => {
           console.log("Received WS message", msg);
@@ -49,4 +49,4 @@ export const bettingApi = createApi({
   }),
 });
 
-export const { useGetEventsQuery } = bettingApi;
+export const { useGetBettingFeedQuery } = bettingFeedApi;
