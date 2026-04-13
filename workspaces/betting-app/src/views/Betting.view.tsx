@@ -1,5 +1,5 @@
 "use client";
-import { CouponLayout } from "features/coupon";
+import { BetslipLayout } from "features/betslip";
 import { BettingLayout } from "features/betting";
 
 export const BettingView = () => {
@@ -8,7 +8,7 @@ export const BettingView = () => {
     <div className="mx-auto px-4 py-6">
       <div className="flex w-full gap-6">
         <BettingLayout />
-        <CouponLayout />
+        <BetslipLayout />
       </div>
     </div>
   );

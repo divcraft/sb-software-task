@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "store";
-import { setCoupon } from "features/coupon";
+import { setBet } from "features/betslip";
 import { selectOutcomeOdds } from "features/betting";
 
 interface PropsType {
@@ -14,11 +14,11 @@ export const OutcomeButton: FC<PropsType> = ({ outcomeId, gameId, highlighted })
   const odds = useAppSelector((state) => selectOutcomeOdds(state, outcomeId));
 
   const isInCoupon = useAppSelector((s) =>
-    s.coupon.coupon.some((couponItem) => couponItem.gameId === gameId && couponItem.outcomeId === outcomeId),
+    s.betslip.bets.some((bet) => bet.gameId === gameId && bet.outcomeId === outcomeId),
   );
 
   const handleClick = () => {
-    dispatch(setCoupon({ gameId, outcomeId }));
+    dispatch(setBet({ gameId, outcomeId }));
   };
 
   return (

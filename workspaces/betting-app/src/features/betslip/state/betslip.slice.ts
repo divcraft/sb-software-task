@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface BettingState {
   //   displayedOutcomesIds: Array<number>;
-  coupon: Array<{
+  bets: Array<{
     gameId: number;
     outcomeId: number;
   }>;
@@ -11,28 +11,28 @@ export interface BettingState {
 
 const initialState: BettingState = {
   //   displayedOutcomesIds: [],
-  coupon: [],
+  bets: [],
   multiplier: null,
 };
 
-export const couponSlice = createSlice({
-  name: "coupon",
+export const betslipSlice = createSlice({
+  name: "betslip",
   initialState,
   reducers: {
     // subscribeOutcomesByCountry(state, action: PayloadAction<Array<number>>) {
     //   state.displayedOutcomesIds = action.payload;
     // },
-    setCoupon(state, action: PayloadAction<{ gameId: number; outcomeId: number }>) {
+    setBet(state, action: PayloadAction<{ gameId: number; outcomeId: number }>) {
       const { gameId, outcomeId } = action.payload;
 
-      if (state.coupon.some((item) => item.gameId === gameId)) {
-        if (state.coupon.some((item) => item.outcomeId === outcomeId)) {
-          state.coupon = state.coupon.filter((item) => item.outcomeId !== outcomeId);
+      if (state.bets.some((item) => item.gameId === gameId)) {
+        if (state.bets.some((item) => item.outcomeId === outcomeId)) {
+          state.bets = state.bets.filter((item) => item.outcomeId !== outcomeId);
         } else {
-          state.coupon = state.coupon.map((item) => (item.gameId === gameId ? { ...item, outcomeId } : item));
+          state.bets = state.bets.map((item) => (item.gameId === gameId ? { ...item, outcomeId } : item));
         }
       } else {
-        state.coupon.push({ gameId, outcomeId });
+        state.bets.push({ gameId, outcomeId });
       }
     },
     setMultiplier(state, action: PayloadAction<number | null>) {
@@ -41,5 +41,5 @@ export const couponSlice = createSlice({
   },
 });
 
-export const { setCoupon, setMultiplier } = couponSlice.actions;
-export const couponReducer = couponSlice.reducer;
+export const { setBet, setMultiplier } = betslipSlice.actions;
+export const betslipReducer = betslipSlice.reducer;

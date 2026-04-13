@@ -6,7 +6,7 @@ const selectState = (state: RootState) => state;
 
 const selectCouponOutcomes = createSelector([selectState], (state) => {
   const outcomes = bettingApi.endpoints.getEvents.select()(state)?.data?.outcomes || {};
-  const couponOutcomes = state.coupon.coupon.map((item) => {
+  const couponOutcomes = state.betslip.bets.map((item) => {
     const outcome = outcomes[item.outcomeId];
     const event = bettingApi.endpoints.getEvents.select()(state)?.data?.events[outcome.eventId];
 
@@ -26,12 +26,12 @@ const selectCouponOutcomes = createSelector([selectState], (state) => {
 });
 
 export const selectCouponOutcomesIds = createSelector([selectState], (state) => {
-  const couponOutcomesIds = state.coupon.coupon.map((item) => item.outcomeId);
+  const couponOutcomesIds = state.betslip.bets.map((item) => item.outcomeId);
   return couponOutcomesIds;
 });
 
 export const selectCouponLength = createSelector([selectState], (state) => {
-  const couponLength = state.coupon.coupon.length;
+  const couponLength = state.betslip.bets.length;
   return couponLength;
 });
 

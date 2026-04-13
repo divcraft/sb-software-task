@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { useAppSelector } from "store";
 import { selectEventNameByOutcomeId, selectOutcomeName } from "features/betting";
-import { CouponOdds } from "./CouponOdds";
+import { BetslipOdds } from "./BetslipOdds";
 
 interface PropsType {
   outcomeId: number;
 }
 
-export const CouponItem: FC<PropsType> = ({ outcomeId }) => {
+export const BetslipItem: FC<PropsType> = ({ outcomeId }) => {
   const eventName = useAppSelector((state) => selectEventNameByOutcomeId(state, outcomeId));
   const outcomeName = useAppSelector((state) => selectOutcomeName(state, outcomeId));
 
@@ -16,7 +16,7 @@ export const CouponItem: FC<PropsType> = ({ outcomeId }) => {
       <div className="text-sm truncate">
         {eventName} — {outcomeName}
       </div>
-      <CouponOdds outcomeId={outcomeId} />
+      <BetslipOdds outcomeId={outcomeId} />
     </div>
   );
 };

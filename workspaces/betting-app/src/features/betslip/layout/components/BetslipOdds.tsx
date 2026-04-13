@@ -6,7 +6,7 @@ interface PropsType {
   outcomeId: number;
 }
 
-export const CouponOdds: FC<PropsType> = ({ outcomeId }) => {
+export const BetslipOdds: FC<PropsType> = ({ outcomeId }) => {
   const outcomeOdds = useAppSelector((state) => selectOutcomeOdds(state, outcomeId));
   return <div className="text-sm font-semibold text-indigo-700">{outcomeOdds}</div>;
 };
